@@ -2,6 +2,7 @@ import { FactoryApi } from "../controller/apiCore.js";
 import {  contenedorTabla } from "../Js/selectores.js";
 import { cargaTabla } from "../views/table/table.js";
 import { HandleData } from "../Js/handleData.js";
+import { showSpinner,hiddenSpinner } from "../model/api.js"
 
 
 const handleData = new HandleData("", "");
@@ -33,7 +34,7 @@ export class EventosTable {
     eventListeners();
     function eventListeners() {
       contenedorTabla.addEventListener("click", contenedorTablaClick);
-      contenedorTabla.addEventListener("change", txtBusquedaTableChange);
+      contenedorTabla.addEventListener("keyup", txtBusquedaTableChange);
     
      // contenedorTabla.addEventListener("focusin", txtBusquedaTableChange);
       // contenedorTabla.addEventListener("mouseup", txtBusquedaTableChange);
@@ -50,6 +51,7 @@ export class EventosTable {
       data = await get(url);
       console.log(data);
     }
+      cargaTabla(data, '')
   }
 
   initToggle() {
@@ -60,19 +62,27 @@ export class EventosTable {
   }
 }
 
-function txtBusquedaTableChange(e) {
+async function  txtBusquedaTableChange(e) {
   e.preventDefault();
- // debugger;
+ 
   const { value, id } = e.target;
   if (id === "txtBusquedaTable") {
-    //value = keyAlphaNumeric(e)? value + e.key: value;
+    showSpinner()
+    const { existData } = handleData;
     country = value ? value : "";
-    //let dataSummary = handleData.getData("summary");
-    //let filter = country.trim() !== "" ? country : "";
-    //cargaTabla(dataSummary, filter);
- //   e.target.focus()
     
+    if (existData("summary")) {
+      data = handleData.getData("summary");
+    } else {
+      let url = setUrl("summary", request);
+      data = await get(url);
+     
+    }
+      cargaTabla(data, country)
+      hiddenSpinner()
   }
+
+  
 }
 const keyAlphaNumeric = (event) =>{
   var keyCode = event.keyCode || event.which
@@ -93,7 +103,7 @@ const keyAlphaNumeric = (event) =>{
 function contenedorTablaClick(e) {
   e.preventDefault();
 
-  const { name, value, tagName, id } = e.target;
+  const { tagName, id } = e.target;
   country = country ? country : "";
 
   if (tagName === "LABEL") {
@@ -101,22 +111,13 @@ function contenedorTablaClick(e) {
     console.log(status);
   }
   if (id === "btnBusquedaTable") {
+    showSpinner()
     let dataSummary =handleData.getData("summary")
     let filter= country.trim() !== "" ? country : ""
     cargaTabla(dataSummary, filter)
-    
-    //llamarApi();
+    hiddenSpinner()
   }
-  // if(e.target.classList.contains('borrar-curso') ) {
-  //      // e.target.parentElement.parentElement.remove();
-  //      const curso = e.target.parentElement.parentElement;
-  //      const cursoId = curso.querySelector('a').getAttribute('data-id');
-
-  //      // Eliminar del arreglo del carrito
-  //      articulosCarrito = articulosCarrito.filter(curso => curso.id !== cursoId);
-
-  //      carritoHTML();
-  // }
+  
 }
 
 const setUrl = (endPoint, request) => {

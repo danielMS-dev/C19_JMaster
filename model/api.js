@@ -14,4 +14,12 @@ export const Api = {
     }
 }
 
+export const showSpinner = () =>(
+    document.querySelector('#statusBusy').style.display = 'block'
+)
+
+export const hiddenSpinner = () =>(
+    document.querySelector('#statusBusy').style.display = 'none'
+)
+
 

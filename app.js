@@ -7,8 +7,8 @@ import { btnVerTabla, btnVerDatos } from "./Js/selectores.js";
 
 const iniciaTabla = (e) =>{
     e.preventDefault();
-    console.log('carga tabla')
-    iniciar()  
+    // console.log('carga tabla')
+     iniciar()  
     let evento= new EventosTable()
 }
 const iniciaDatos= (e) =>{
@@ -24,11 +24,11 @@ btnVerDatos.addEventListener("click", iniciaDatos)
 const menu = document.querySelector('#menuSuperior');
 
 if(menu.children.item(0).children.item(0).classList.contains("active")){ 
-    iniciaTabla()
+    iniciar()
+    let evento= new EventosTable()
 } else {
-    iniciaDatos();
-    let evento= new EventosData()
-    console.log('carga Datos')
+   // iniciaDatos();
+    let evento= new EventosData()    
 }
 
 

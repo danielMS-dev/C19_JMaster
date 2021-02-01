@@ -54,37 +54,19 @@ let inicio = (filter) => {
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-     
-      <li class="nav-item">
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label class="btn btn-info active">
-          <input type="radio" name="options" id="confirmed" checked> Confirmado
-      </label>
-      <label class="btn btn-info">
-          <input type="radio" name="options" id="recovered"> Recuperado
-      </label>
-      <label class="btn btn-info">
-          <input type="radio" name="options" id="deaths"> Muertos
-      </label>
-      <label class="btn btn-info">
-      <input type="radio" name="options" id="all"> Todos
-  </label>
-  </div>
-        </li>
-    </ul>
+   
     <form class="form-inline my-10 my-lg-0">
-      <input value="${filter}" id="txtBusquedaTable" class="form-control mr-sm-2" autocomplete="off" type="text">
+      <input value="" id="txtBusquedaTable" class="form-control mr-sm-2" autocomplete="off" type="text">
       <button id="btnBusquedaTable" class="btn btn-outline-success my-2 my-sm-0"  type="Button">Search</button>
     </form>
   </div>
 </nav>
+<div id="resultadoTabla"> </div>
 `;
 };
 
 export const cargaTabla = (data, filter) => {
   let { Countries, Global } = data;
-
   if (!!filter) {
     let filterUpper = filter.toUpperCase();
     Countries = Countries.filter(
@@ -101,10 +83,12 @@ export const cargaTabla = (data, filter) => {
   let table = setearTabla(body);
   let html = inicio(filter.trim()) + table;
 
-  contenedorTabla.innerHTML = html;
+  //contenedorTabla.innerHTML = html;
+  document.getElementById(
+    "resultadoTabla"
+  ).innerHTML = table;
 
-  let evento = new EventosTable
-  ();
+  //let evento = new EventosTable();
 };
 
 const sortByTotalConfirmed = (Countries) =>
